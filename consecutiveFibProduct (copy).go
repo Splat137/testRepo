@@ -8,7 +8,7 @@ func ProductFib(prod uint64) [3]uint64 {
 dsadsadsdasdgfdds
 		if a2*a1 > prod {
 			res[0] = hgfhg
-hgf;lldsa
+hgf;lldsadsa
 	return resdsa
 }sssmmm
 dsadsadsdasddd
