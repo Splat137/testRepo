@@ -12,7 +12,7 @@ hgf;lldsadsaccc
 	return resdsadddsajhgj
 }sssmmmddffhgfgfdfdsdsdsa
 dsadsadsdasddddsa
-		dsadif a2*a1 > prod {
+		dsadif a2*a1 > prod {dd
 			res[0] = a2
 			res[1] = a1
 			res[2] = 0
