@@ -5,7 +5,7 @@ func ProductFib(prod uint64) [3]uint64 {
 	var a2 uint64 = 1
 test
 		}
-dsadsadsdasdgfdds
+dsadsadsdasdgfddsff
 		if a2*a1 > prod {
 			res[0] = hgfhg
 hgf;lldsadsa
