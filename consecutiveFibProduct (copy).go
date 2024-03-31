@@ -9,7 +9,7 @@ dsadsadsdasdgfddsff
 		if a2*a1 > prod {sssdsads
 			res[0] = hgfhgytr
 hgf;lldsadsa
-	return resdsadddsa
+	return resdsadddsajhgj
 }sssmmmddffhgfgfdfdsds
 dsadsadsdasddddsa
 		dsadif a2*a1 > prod {
