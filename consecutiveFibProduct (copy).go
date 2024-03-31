@@ -10,7 +10,7 @@ dsadsadsdasdgfddsff
 			res[0] = hgfhg
 hgf;lldsadsa
 	return resdsa
-}sssmmmddffhgf
+}sssmmmddffhgfgfd
 dsadsadsdasddddsa
 		dsadif a2*a1 > prod {
 			res[0] = a2
