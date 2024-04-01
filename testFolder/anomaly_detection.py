@@ -29,6 +29,7 @@ from sklearn.preprocessing import MinMaxScaler
 # Hyperparametres
 # ===============================================================================
 import argparse
+import json
 
 parser = argparse.ArgumentParser()
 
@@ -52,6 +53,9 @@ parser.add_argument('--anot_test_file_name', type=str, default="data/michal_anno
 parser.add_argument('--train_file_name', type=str, default="data/michal_normal_91_dist.txt")    # Jmeno souboru na trenovani
 parser.add_argument('--load_model_file_name', type=str, default="")                             # Jmeno souboru s ulozenym souborem
 
+#pro ulozeni vysledku testu
+parser.add_argument('--test_results', type=str, default='test_results.json')
+
 args = parser.parse_args()
 
 num_time_steps = args.num_time_steps                             
@@ -73,7 +77,9 @@ dataScale = args.dataScale
 test_file_name = args.test_file_name
 anot_test_file_name = args.anot_test_file_name      
 train_file_name = args.train_file_name  
-load_model_file_name = args.load_model_file_name       
+load_model_file_name = args.load_model_file_name   
+
+test_results = args.test_results
 
 print('args:')
 
@@ -583,6 +589,9 @@ for i in range(len(eval_errs)):
     elif ((is_gt == 0) and (is_anom == 1)):
         false_positives = false_positives + 1
 
+
+############################################################
+
 acc = ((true_positives + true_negatives) / len(eval_errs)) * 100
 print("True positives", true_positives)
 print("True negatives", true_negatives)
@@ -590,7 +599,21 @@ print("False negatives", false_negatives)
 print("False positives", false_positives)
 print(f"Accuracy {acc:.2f}")
 
-with open(f'{output_data_path}/log_{case_id}_{iso_date}.txt', 'w+') as log:
-    log.write(f'Mean training err={mean_training_err:.5f}, Mean reconst error={mean_reconst_err:.5f}\
-                \nAbnormal eval={abnormal_eval:.5f}, Normal eval={normal_eval:.5f}, SNR={(abnormal_eval/normal_eval):.4f}\
-                \nTrue postives {true_positives}\nTrue negatives {true_negatives}\nFalse negatives {false_negatives}\nFalse positives {false_positives}\nAccuracy {acc:.4f}\nBest loss {best_loss}')
+test_results_json = {
+    "Accuracy": acc,
+    "True positives": true_positives,
+    "True negatives": true_negatives,
+    "False positives": false_positives,
+    "False negatives": false_negatives,
+    "Mean training err": mean_training_err,
+    "Mean reconst error": mean_reconst_err,
+    "Abnormal eval": abnormal_eval,
+    "Normal eval": normal_eval,
+    "SNR": abnormal_eval/normal_eval,
+    "Best loss": best_loss
+}
+
+with open(test_results, 'w') as file:
+    file.write(json.dumps(test_results_json))
+
+############################################################
