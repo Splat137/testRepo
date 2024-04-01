@@ -17,6 +17,26 @@ import time
 from datetime import datetime
 
 from sklearn.preprocessing import MinMaxScaler
+
+
+
+
+
+
+####################################################
+import argparse
+
+parser = argparse.ArgumentParser()
+
+parser.add_argument('--num_epochs', type=int, default=10)
+
+args = parser.parse_args()
+
+####################################################
+
+
+
+
 # %%
 # Hyperparametres
 # ===============================================================================
@@ -26,7 +46,7 @@ num_features_intern0 = 512  # 640#640#512     # Pocty neuronu v dalsich vrstvach
 num_features_intern1 = 256  # 256#256#256     # 160#256#160  
 num_vars_in_LSTM = 128                        # Kolik vystupnich promennych maji LSTM bloky.
 latent_dim = 100                              #
-num_epochs = 11  # 256                       # Kolik epoch se ma pouzit pro uceni.
+num_epochs = args.num_epochs  # 256                       # Kolik epoch se ma pouzit pro uceni.
 my_batch_size = 128                           #
 anomaly_outer_margin = 16                     # Na kazdou casu od anomalie se tohle povazuje za nejistou oblast.
 anomaly_inner_margin = 16                     #
