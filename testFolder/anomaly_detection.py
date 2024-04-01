@@ -24,51 +24,71 @@ from sklearn.preprocessing import MinMaxScaler
 
 
 ####################################################
-import argparse
-
-parser = argparse.ArgumentParser()
-
-parser.add_argument('--num_epochs', type=int, default=10)
-
-args = parser.parse_args()
-
-####################################################
-
-
-
 
 # %%
 # Hyperparametres
 # ===============================================================================
-# Kolik casu dozadu sledujeme k provedeni predikce.
-num_time_steps = 1
-num_features_intern0 = 512  # 640#640#512     # Pocty neuronu v dalsich vrstvach
-num_features_intern1 = 256  # 256#256#256     # 160#256#160  
-num_vars_in_LSTM = 128                        # Kolik vystupnich promennych maji LSTM bloky.
-latent_dim = 100                              #
-num_epochs = args.num_epochs  # 256                       # Kolik epoch se ma pouzit pro uceni.
-my_batch_size = 128                           #
-anomaly_outer_margin = 16                     # Na kazdou casu od anomalie se tohle povazuje za nejistou oblast.
-anomaly_inner_margin = 16                     #
-my_learning_rate, my_amsgrad = 3e-4, False    # 0.0005 3e-4
-load_trained_model = False                    # Loads up loss, weights and epochs
-continue_training = True                      # Continues to train loaded trained model false if we want to sample from a loaded model
-train_diff_dataset = False                    # If we want to train on different dataset with loaded model then it is good to save the newest best model
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+import argparse
 
-scaler = MinMaxScaler()
-dataScale = 1.0
+parser = argparse.ArgumentParser()
+
+parser.add_argument('--num_time_steps', type=int, default=1)                                    # Kolik casu dozadu sledujeme k provedeni predikce.
+parser.add_argument('--num_features_intern0', type=int, default=512)                            # 640#640#512 # Pocty neuronu v dalsich vrstvach
+parser.add_argument('--num_features_intern1', type=int, default=256)                            # 256#256#256     # 160#256#160 
+parser.add_argument('--num_vars_in_LSTM', type=int, default=128)                                # Kolik vystupnich promennych maji LSTM bloky.
+parser.add_argument('--latent_dim', type=int, default=100)
+parser.add_argument('--num_epochs', type=int, default=100)                                      # 256 # Kolik epoch se ma pouzit pro uceni.
+parser.add_argument('--my_batch_size', type=int, default=10)
+parser.add_argument('--anomaly_outer_margin', type=int, default=16)                             # Na kazdou casu od anomalie se tohle povazuje za nejistou oblast.
+parser.add_argument('--anomaly_inner_margin', type=int, default=16)
+parser.add_argument('--my_learning_rate', type=float, default=3e-4)                             # 0.0005 3e-4
+parser.add_argument('--my_amsgrad', type=bool, default=False)
+parser.add_argument('--load_trained_model', type=bool, default=False)                           # Loads up loss, weights and epochs
+parser.add_argument('--continue_training', type=bool, default=True)                             # Continues to train loaded trained model false if we want to sample from a loaded model
+parser.add_argument('--train_diff_dataset', type=bool, default=False)                           # If we want to train on different dataset with loaded model then it is good to save the newest best model
+parser.add_argument('--dataScale', type=float, default=1.0)                         
+parser.add_argument('--test_file_name', type=str, default="data/michal_anomal_91_dist.txt")     # Jmeno souboru na testovani
+parser.add_argument('--anot_test_file_name', type=str, default="data/michal_annot.txt")         # Jmeno souboru s anotaci testu.
+parser.add_argument('--train_file_name', type=str, default="data/michal_normal_91_dist.txt")    # Jmeno souboru na trenovani
+parser.add_argument('--load_model_file_name', type=str, default="")                             # Jmeno souboru s ulozenym souborem
+
+args = parser.parse_args()
+
+num_time_steps = args.num_time_steps                             
+num_features_intern0 = args.num_features_intern0       
+num_features_intern1 = args.num_features_intern1  
+num_vars_in_LSTM = args.num_vars_in_LSTM                       
+latent_dim = args.latent_dim                              
+num_epochs = args.num_epochs  
+my_batch_size = args.my_batch_size                           
+anomaly_outer_margin = args.anomaly_outer_margin                     
+anomaly_inner_margin = args.anomaly_inner_margin                     
+my_learning_rate = args.my_learning_rate
+my_amsgrad = args.my_amsgrad    
+load_trained_model = args.load_trained_model                    
+continue_training = args.continue_training                      
+train_diff_dataset = args.train_diff_dataset                    
+dataScale = args.dataScale
 # %%
-# Jmeno souboru na testovani
-test_file_name = "data/michal_anomal_91_dist.txt"
-# Jmeno souboru s anotaci testu.
-anot_test_file_name = "data/michal_annot.txt"
-# Jmeno souboru na trenovani
-train_file_name = "data/michal_normal_91_dist.txt"
-# Jmeno souboru s ulozenym souborem
-load_model_file_name = ""
+test_file_name = args.test_file_name
+anot_test_file_name = args.anot_test_file_name      
+train_file_name = args.train_file_name  
+load_model_file_name = args.load_model_file_name       
+
+print('args:')
+
+for name, value in vars(args).items():
+    print(f"{name}: {value}")
+
+print()
+
+####################################################
+
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+scaler = MinMaxScaler()
 save_model_file_prefix = "best_model" if not train_diff_dataset else "best_diff_model_save"
 # %%
+
 class RepeatVector(nn.Module):
     def __init__(self, times_repeated):
         super().__init__()
