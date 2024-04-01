@@ -1,7 +1,7 @@
 package kata
 
 func ProductFib(prod uint64) [3]uint64 {
-	var a1 uint64 = 1
+	var a1 uint64 = 1dsa
 	var a2 uint64 = 1
 testdsadsa
 		}dsa
