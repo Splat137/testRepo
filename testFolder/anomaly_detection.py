@@ -38,7 +38,7 @@ parser.add_argument('--num_features_intern0', type=int, default=512)            
 parser.add_argument('--num_features_intern1', type=int, default=256)                            # 256#256#256     # 160#256#160 
 parser.add_argument('--num_vars_in_LSTM', type=int, default=128)                                # Kolik vystupnich promennych maji LSTM bloky.
 parser.add_argument('--latent_dim', type=int, default=100)
-parser.add_argument('--num_epochs', type=int, default=100)                                      # 256 # Kolik epoch se ma pouzit pro uceni.
+parser.add_argument('--num_epochs', type=int, default=2)                                      # 256 # Kolik epoch se ma pouzit pro uceni.
 parser.add_argument('--my_batch_size', type=int, default=10)
 parser.add_argument('--anomaly_outer_margin', type=int, default=16)                             # Na kazdou casu od anomalie se tohle povazuje za nejistou oblast.
 parser.add_argument('--anomaly_inner_margin', type=int, default=16)
@@ -605,12 +605,12 @@ test_results_json = {
     "True negatives": true_negatives,
     "False positives": false_positives,
     "False negatives": false_negatives,
-    "Mean training err": mean_training_err,
-    "Mean reconst error": mean_reconst_err,
-    "Abnormal eval": abnormal_eval,
-    "Normal eval": normal_eval,
-    "SNR": abnormal_eval/normal_eval,
-    "Best loss": best_loss
+    "Mean training err": float(mean_training_err),
+    "Mean reconst error": float(mean_reconst_err),
+    "Abnormal eval": float(abnormal_eval),
+    "Normal eval": float(normal_eval),
+    "SNR": float(abnormal_eval/normal_eval),
+    "Best loss": float(best_loss)
 }
 
 with open(test_results, 'w') as file:
