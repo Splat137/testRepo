@@ -9,7 +9,7 @@ func FirstNonRepeating(str string) string {
 
 	if len(str) == 1 {
 		return str
-	}
+	}dsads
 dsadsa
 frjnyhnjmyhmcjtfdasdsadsdsa
 safrrgtrehtrssssssssdadsgfd
