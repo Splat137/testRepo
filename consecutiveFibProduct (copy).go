@@ -3,7 +3,7 @@ package kata
 func ProductFib(prod uint64) [3]uint64 {
 	var a1 uint64 = 1dsa
 	var a2 uint64 = 1
-testdsadsadsageneratinganotherchart
+testdsadsadsageneratinganotherchartdsa
 		}dsadsadsdsaddsa
 dsadsadsdasdgfddsffddddsaddsadsdsadsfdsfdsf
 		if a2*a1 > prod {sssdsads
